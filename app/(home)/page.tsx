@@ -1,3 +1,4 @@
+import BrowsingHistoryList from "@/components/shared/browsing-history-list";
 import { HomeCard } from "@/components/shared/home/home-card";
 import { HomeCarousel } from "@/components/shared/home/home-carousel";
 import ProductSlider from "@/components/shared/product/product-slider";
@@ -63,7 +64,7 @@ export default async function Page() {
   ];
 
   const todaysDeats = await getProductsByTag({ tag: "todays-deal" });
-  const bestSellingProducts = await getProductsByTag({ tag: "best-seller"});
+  const bestSellingProducts = await getProductsByTag({ tag: "best-seller" });
   return (
     <>
       <HomeCarousel items={data.carousels} />
@@ -75,16 +76,19 @@ export default async function Page() {
             <ProductSlider title={"Today's Deals"} products={todaysDeats} />
           </CardContent>
         </Card>
-        <Card className="w-full rounded-none " >
+        <Card className="w-full rounded-none ">
           <CardContent className="p-4 items-center gap-3">
-                 <ProductSlider 
-                 title="Best Selling Products"
-                 products={bestSellingProducts}
-                 hideDetails
-                 />
+            <ProductSlider
+              title="Best Selling Products"
+              products={bestSellingProducts}
+              hideDetails
+            />
           </CardContent>
-
         </Card>
+      </div>
+
+      <div className="p-4 bg-background">
+        <BrowsingHistoryList />
       </div>
     </>
   );

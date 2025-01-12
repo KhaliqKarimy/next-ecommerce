@@ -17,6 +17,8 @@ import { Separator } from "@/components/ui/separator";
 // import RatingSummary from '@/components/shared/product/rating-summary'
 import ProductSlider from "@/components/shared/product/product-slider";
 import Rating from "@/components/shared/product/rating";
+import BrowsingHistoryList from "@/components/shared/browsing-history-list";
+import AddToBrowsingHistory from "@/components/shared/product/add-to-browsing-history";
 // import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata(props: {
@@ -59,7 +61,7 @@ export default async function ProductDetails(props: {
   //   const t = await getTranslations()
   return (
     <div>
-      {/* <AddToBrowsingHistory id={product._id} category={product.category} /> */}
+      <AddToBrowsingHistory id={product._id} category={product.category} />
       <section>
         <div className="grid grid-cols-1 md:grid-cols-5  ">
           <div className="col-span-2">
@@ -162,9 +164,9 @@ export default async function ProductDetails(props: {
           title={`Best Sellers in ${product.category}`}
         />
       </section>
-      {/* <section>
+      <section>
         <BrowsingHistoryList className="mt-10" />
-      </section> */}
+      </section>
     </div>
   );
 }
