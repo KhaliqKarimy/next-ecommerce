@@ -1,5 +1,5 @@
 // import { auth } from '@/auth'
-// import AddToCart from '@/components/shared/product/add-to-cart'
+import AddToCart from "@/components/shared/product/add-to-cart";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   getProductBySlug,
@@ -19,6 +19,7 @@ import ProductSlider from "@/components/shared/product/product-slider";
 import Rating from "@/components/shared/product/rating";
 import BrowsingHistoryList from "@/components/shared/browsing-history-list";
 import AddToBrowsingHistory from "@/components/shared/product/add-to-browsing-history";
+import { generatedId, round2 } from "@/lib/utils";
 // import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata(props: {
@@ -100,9 +101,7 @@ export default async function ProductDetails(props: {
             </div>
             <Separator className="my-2" />
             <div className="flex flex-col gap-2">
-              <p className="p-bold-20 text-grey-600">
-                Product Description:
-              </p>
+              <p className="p-bold-20 text-grey-600">Product Description:</p>
               <p className="p-medium-16 lg:p-regular-18">
                 {product.description}
               </p>
@@ -119,20 +118,16 @@ export default async function ProductDetails(props: {
                   </div>
                 )}
                 {product.countInStock !== 0 ? (
-                  <div className="text-green-700 text-xl">
-                    In Stock
-                  </div>
+                  <div className="text-green-700 text-xl">In Stock</div>
                 ) : (
-                  <div className="text-destructive text-xl">
-                      Out of Stock
-                  </div>
+                  <div className="text-destructive text-xl">Out of Stock</div>
                 )}
 
-                {/* {product.countInStock !== 0 && (
+                {product.countInStock !== 0 && (
                   <div className="flex justify-center items-center">
                     <AddToCart
                       item={{
-                        clientId: generateId(),
+                        clientId: generatedId(),
                         product: product._id,
                         countInStock: product.countInStock,
                         name: product.name,
@@ -146,7 +141,7 @@ export default async function ProductDetails(props: {
                       }}
                     />
                   </div>
-                )} */}
+                )}
               </CardContent>
             </Card>
           </div>
