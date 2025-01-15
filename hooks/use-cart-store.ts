@@ -18,8 +18,8 @@ const initialState: Cart = {
 interface CartState {
   cart: Cart;
   addItem: (item: OrderItem, quantity: number) => Promise<string>;
-//   updateItem: (item: OrderItem, quantity: number) => Promise<void>;
-//   removeItem: (item: OrderItem) => void;
+  updateItem: (item: OrderItem, quantity: number) => Promise<void>;
+  removeItem: (item: OrderItem) => void;
 //   clearCart: () => void;
 //   setShippingAddress: (shippingAddress: ShippingAddress) => Promise<void>;
 //   setPaymentMethod: (paymentMethod: string) => void;
@@ -28,7 +28,7 @@ interface CartState {
 
 const useCartStore = create(
   persist<CartState>(
-    (set, get) => ({
+    (set, get) => ({    
       cart: initialState,
 
       addItem: async (item: OrderItem, quantity: number) => {
@@ -41,18 +41,16 @@ const useCartStore = create(
         )
 
         if (existItem) {
-            if (existItem.countInStock < quantity + existItem.quantity) {
-              throw new Error('Not enough items in stock')
-            }
-          } else {
-            if (item.countInStock < item.quantity) {
-              throw new Error('Not enough items in stock')
-            }
+          if (existItem.countInStock < quantity + existItem.quantity) {
+            throw new Error('Not enough items in stock')
           }
+        } else {
+          if (item.countInStock < item.quantity) {
+            throw new Error('Not enough items in stock')
+          }
+        }
 
-
-
-          const updatedCartItems = existItem
+        const updatedCartItems = existItem
           ? items.map((x) =>
               x.product === item.product &&
               x.color === item.color &&
@@ -62,37 +60,81 @@ const useCartStore = create(
             )
           : [...items, { ...item, quantity }]
 
-
-
-          set({
-            cart: {
-              ...get().cart,
+        set({
+          cart: {
+            ...get().cart,
+            items: updatedCartItems,
+            ...(await calcDeliveryDateAndPrice({
               items: updatedCartItems,
-              ...(await calcDeliveryDateAndPrice({
-                items: updatedCartItems,
-              })),
-            },
-          })
+            //   shippingAddress,
+            })),
+          },
+        })
+        const foundItem = updatedCartItems.find(
+          (x) =>
+            x.product === item.product &&
+            x.color === item.color &&
+            x.size === item.size
+        )
+        if (!foundItem) {
+          throw new Error('Item not found in cart')
+        }
+        return foundItem.clientId
+      },
 
 
-          return updatedCartItems.find(
-            (x) =>
-              x.product === item.product &&
-              x.color === item.color &&
-              x.size === item.size
-          )?.clientId
 
 
-
-
-    },
-    init: () => ({ cart: initialState}),
+  
+      updateItem: async (item: OrderItem, quantity: number) => {
+        const { items } = get().cart
+        const exist = items.find(
+          (x) =>
+            x.product === item.product &&
+            x.color === item.color &&
+            x.size === item.size
+        )
+        if (!exist) return
+        const updatedCartItems = items.map((x) =>
+          x.product === item.product &&
+          x.color === item.color &&
+          x.size === item.size
+            ? { ...exist, quantity: quantity }
+            : x
+        )
+        set({
+          cart: {
+            ...get().cart,
+            items: updatedCartItems,
+            ...(await calcDeliveryDateAndPrice({
+              items: updatedCartItems,
+            })),
+          },
+        })
+      },
+      removeItem: async (item: OrderItem) => {
+        const { items } = get().cart
+        const updatedCartItems = items.filter(
+          (x) =>
+            x.product !== item.product ||
+            x.color !== item.color ||
+            x.size !== item.size
+        )
+        set({
+          cart: {
+            ...get().cart,
+            items: updatedCartItems,
+            ...(await calcDeliveryDateAndPrice({
+              items: updatedCartItems,
+            //   shippingAddress,
+            })),
+          },
+        })
+      },
 
  
     }),
-    {
-        name:'cart-store',
-    }
+
 )
 );
 export default useCartStore;
