@@ -2,7 +2,7 @@
 
 import { ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
-import useIsMounted from "@/hooks/use -is-mounted";
+import useIsMounted from "@/hooks/use-is-mounted";
 import useCartSidebar from "@/hooks/use-cart-sidebar";
 import { cn } from "@/lib/utils";
 import useCartStore from "@/hooks/use-cart-store";
@@ -38,9 +38,7 @@ export default function CartButton() {
         <span className="font-bold">Cart</span>
 
         {isCartSidebarOpen && (
-          <div
-            className="absolute top-[20px]   z-10   w-0 h-0 border-l-[7px] border-r-[7px] border-b-[8px] border-transparent border-b-background"
-          ></div>
+          <div className="absolute top-[20px]   z-10   w-0 h-0 border-l-[7px] border-r-[7px] border-b-[8px] border-transparent border-b-background"></div>
         )}
       </div>
     </Link>
