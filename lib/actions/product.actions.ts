@@ -2,7 +2,7 @@
 
 import { connectToDatabase } from "@/lib/db";
 import Product, { IProduct } from "@/lib/db/models/product.model";
-import { json } from "stream/consumers";
+// import { json } from "stream/consumers";
 import { PAGE_SIZE } from "../constants";
 
 export async function getAllCategories() {

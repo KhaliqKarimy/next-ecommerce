@@ -2,11 +2,10 @@ import mongoose from 'mongoose'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const cached = (global as any).mongoose || { conn: null, promise: null }
+// const MONGODB_URI = "mongodb://localhost:27017/next-DB"
 
-const MONGODB_URI = 'mongodb://localhost:27017/next-DB';
 export const connectToDatabase = async (
-
-  // MONGODB_URI = process.env.MONGODB_URI
+  MONGODB_URI = process.env.MONGODB_URI
 ) => {
   if (cached.conn) return cached.conn
 
@@ -18,7 +17,3 @@ export const connectToDatabase = async (
 
   return cached.conn
 }
-
-
-
-
