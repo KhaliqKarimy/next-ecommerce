@@ -14,12 +14,14 @@ import ProductGallery from "@/components/shared/product/product-gallery";
 // import AddToBrowsingHistory from '@/components/shared/product/add-to-browsing-history'
 import { Separator } from "@/components/ui/separator";
 // import BrowsingHistoryList from '@/components/shared/browsing-history-list'
-// import RatingSummary from '@/components/shared/product/rating-summary'
+import RatingSummary from '@/components/shared/product/rating-summary'
 import ProductSlider from "@/components/shared/product/product-slider";
 import Rating from "@/components/shared/product/rating";
 import BrowsingHistoryList from "@/components/shared/browsing-history-list";
 import AddToBrowsingHistory from "@/components/shared/product/add-to-browsing-history";
 import { generatedId, round2 } from "@/lib/utils";
+import ReviewList from "./review-list";
+import { auth } from "@/auth";
 // import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata(props: {
@@ -49,7 +51,7 @@ export default async function ProductDetails(props: {
 
   const { slug } = params;
 
-  //   const session = await auth()
+    const session = await auth()
 
   const product = await getProductBySlug(slug);
 
@@ -76,9 +78,13 @@ export default async function ProductDetails(props: {
               </p>
               <h1 className="font-bold text-lg lg:text-xl">{product.name}</h1>
               <div className="flex items-center gap-2">
-                <span>{product.avgRating.toFixed(1)}</span>
-                <Rating rating={product.avgRating} />
-                <span>{product.numReviews} ratings</span>
+                  <RatingSummary 
+                      avgRating={product.avgRating}
+                      numReviews={product.numReviews}
+                      asPopover
+                      ratingDistribution={product.ratingDistribution}
+                  
+                  />
               </div>
               <Separator />
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -147,12 +153,12 @@ export default async function ProductDetails(props: {
           </div>
         </div>
       </section>
-      {/* <section className="mt-10">
+      <section className="mt-10">
         <h2 className="h2-bold mb-2" id="reviews">
-          {t("Product.Customer Reviews")}
+          Customer Reviews
         </h2>
         <ReviewList product={product} userId={session?.user.id} />
-      </section> */}
+      </section>
       <section className="mt-10">
         <ProductSlider
           products={relatedProducts.data}
