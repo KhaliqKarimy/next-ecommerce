@@ -1,18 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { APP_NAME } from '@/lib/constants'
-// import { getAllCategories } from '@/lib/actions/product.actions'
+import { getAllCategories } from '@/lib/actions/product.actions'
 import Menu from './menu'
 import Search from './search'
 import data from '@/lib/data'
-import { Button } from '@/components/ui/button'
-import { MenuIcon } from 'lucide-react'
-// import Sidebar from './sidebar'
+import Sidebar from './sidebar'
 // import { getSetting } from '@/lib/actions/setting.actions'
 // import { getTranslations } from 'next-intl/server'
 
 export default async function Header() {
-//   const categories = await getAllCategories()
+  const categories = await getAllCategories()
 //   const { site } = await getSetting()
 //   const t = await getTranslations()
   return (
@@ -44,11 +42,8 @@ export default async function Header() {
         </div>
       </div>
       <div className='flex items-center px-3 mb-[1px]  bg-gray-800'>
-        {/* <Sidebar categories={categories} /> */}
-        <Button  variant='ghost' className=' dark header-button flex items-center gap-1 text-base [&_svg]:size-6'>
-             <MenuIcon />
-             All
-        </Button>
+        <Sidebar categories={categories} />
+        
         <div className='flex items-center flex-wrap gap-3 overflow-hidden   max-h-[42px]'>
           {data.headerMenus.map((menu) => (
             <Link
